@@ -180,6 +180,33 @@ export interface ImageOptions {
    * @since 1.0.0
    */
   promptLabelPicture?: string;
+
+  /**
+   * Text value to use when no device is found.
+   * The label to explain the error.
+   * @default: 'No camera found'
+   *
+   * @since 4.1.4
+   */
+  noDevicesText?: string;
+
+  /**
+   * Text value to use when no device is found.
+   * The label of the button to select a file.
+   * @default: 'Choose image'
+   *
+   * @since 4.1.4
+   */
+  noDevicesButtonText?: string;
+
+  /**
+   * Option to show the gallery button.
+   * If false, the user won't be presented with the option to pic a photo from the gallery.
+   * @default: true
+   *
+   * @since 4.1.4
+   */
+  showPicImage?: boolean;
 }
 
 export interface Photo {

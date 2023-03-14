@@ -2,6 +2,7 @@ package com.capacitorjs.plugins.pushnotifications;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -10,15 +11,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.service.notification.StatusBarNotification;
+
 import androidx.core.app.NotificationCompat;
 import com.getcapacitor.*;
 import com.getcapacitor.annotation.CapacitorPlugin;
 import com.getcapacitor.annotation.Permission;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,6 +34,8 @@ public class PushNotificationsPlugin extends Plugin {
     private static final String EVENT_TOKEN_CHANGE = "registration";
     private static final String EVENT_TOKEN_ERROR = "registrationError";
 
+    private Class mainActivityClass;
+
     public void load() {
         notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
         firebaseMessagingService = new MessagingService();
@@ -45,6 +47,12 @@ public class PushNotificationsPlugin extends Plugin {
         }
 
         notificationChannelManager = new NotificationChannelManager(getActivity(), notificationManager, getConfig());
+
+        try {
+            mainActivityClass = Class.forName(getContext().getPackageName()+".MainActivity");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -230,10 +238,26 @@ public class PushNotificationsPlugin extends Plugin {
                         e.printStackTrace();
                     }
                     int pushIcon = android.R.drawable.ic_dialog_info;
+                    int pushColor = android.R.color.black;
 
                     if (bundle != null && bundle.getInt("com.google.firebase.messaging.default_notification_icon") != 0) {
                         pushIcon = bundle.getInt("com.google.firebase.messaging.default_notification_icon");
                     }
+                    if (bundle != null && bundle.getInt("com.google.firebase.messaging.default_notification_color") != 0) {
+                        pushColor = bundle.getInt("com.google.firebase.messaging.default_notification_color");
+                    }
+                    //Delete this when the color can be obtained from the bundle
+                    pushColor = getContext().getResources().getColor(R.color.colorPrimary);
+
+                    Intent notificationIntent = new Intent(getContext(), mainActivityClass);
+                    notificationIntent.putExtras(remoteMessage.toIntent().getExtras());
+                    int flags;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                        flags = PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT;
+                    else
+                        flags = PendingIntent.FLAG_UPDATE_CURRENT;
+                    PendingIntent resultPendingIntent = PendingIntent.getActivity(getContext(), 0, notificationIntent, flags);
+
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(
                         getContext(),
                         NotificationChannelManager.FOREGROUND_NOTIFICATION_CHANNEL_ID
@@ -241,7 +265,11 @@ public class PushNotificationsPlugin extends Plugin {
                         .setSmallIcon(pushIcon)
                         .setContentTitle(title)
                         .setContentText(body)
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentIntent(resultPendingIntent)
+                        .setAutoCancel(true)
+                        .setColorized(true)
+                        .setColor(pushColor);
                     notificationManager.notify(0, builder.build());
                 }
             }
