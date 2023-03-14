@@ -1,6 +1,6 @@
 {
   "name": "@b0ve/camera",
-  "version": "4.1.6",
+  "version": "4.1.7",
   "description": "The Camera API provides the ability to take a photo with the camera or choose an existing one from the photo album.",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -11,7 +11,7 @@
     "android/build.gradle",
     "dist/",
     "ios/Plugin/",
-    "B0vECapacitorCamera.podspec"
+    "B0veCamera.podspec"
   ],
   "author": "BorjaLive <borja@b0ve.com>",
   "license": "MIT",
@@ -42,7 +42,7 @@
     "clean": "rimraf ./dist",
     "watch": "tsc --watch",
     "prepublishOnly": "npm run build",
-    "publish:cocoapod": "pod trunk push ./B0vECapacitorCamera.podspec --allow-warnings"
+    "publish:cocoapod": "pod trunk push ./B0veCamera.podspec --allow-warnings"
   },
   "devDependencies": {
     "@capacitor/android": "^4.0.0",

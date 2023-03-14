@@ -4,7 +4,7 @@ export default {
     {
       file: 'dist/plugin.js',
       format: 'iife',
-      name: 'b0vECapacitorCamera',
+      name: 'b0veCamera',
       globals: {
         '@capacitor/core': 'capacitorExports',
       },
