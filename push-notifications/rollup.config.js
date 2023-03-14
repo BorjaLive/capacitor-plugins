@@ -4,7 +4,7 @@ export default {
     {
       file: 'dist/plugin.js',
       format: 'iife',
-      name: 'capacitorPushNotifications',
+      name: 'b0vePushNotifications',
       globals: {
         '@capacitor/core': 'capacitorExports',
       },
