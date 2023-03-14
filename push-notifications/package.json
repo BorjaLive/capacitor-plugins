@@ -1,5 +1,5 @@
 {
-  "name": "@b0ve/push-notifications",
+  "name": "@b0ve/better-push-notifications",
   "version": "4.1.7",
   "description": "The Push Notifications API provides access to native push notifications.",
   "main": "dist/plugin.cjs.js",
@@ -11,7 +11,7 @@
     "android/build.gradle",
     "dist/",
     "ios/Plugin/",
-    "B0vePushNotifications.podspec"
+    "B0veBetterPushNotifications.podspec"
   ],
   "author": "BorjaLive <borja@b0ve.com>",
   "license": "MIT",
@@ -42,7 +42,7 @@
     "clean": "rimraf ./dist",
     "watch": "tsc --watch",
     "prepublishOnly": "npm run build",
-    "publish:cocoapod": "pod trunk push ./B0vePushNotifications.podspec --allow-warnings"
+    "publish:cocoapod": "pod trunk push ./B0veBetterPushNotifications.podspec --allow-warnings"
   },
   "devDependencies": {
     "@capacitor/android": "^4.0.0",
