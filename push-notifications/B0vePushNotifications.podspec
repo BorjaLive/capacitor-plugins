@@ -3,7 +3,7 @@ require 'json'
 package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
 
 Pod::Spec.new do |s|
-  s.name = 'B0vEPushNotificationsAlt'
+  s.name = 'B0vePushNotifications'
   s.version = package['version']
   s.summary = package['description']
   s.license = package['license']
