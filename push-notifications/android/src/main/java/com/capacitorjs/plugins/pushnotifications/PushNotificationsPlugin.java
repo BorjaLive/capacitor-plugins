@@ -260,7 +260,7 @@ public class PushNotificationsPlugin extends Plugin {
 
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(
                         getContext(),
-                        NotificationChannelManager.FOREGROUND_NOTIFICATION_CHANNEL_ID
+                        "default"
                     )
                         .setSmallIcon(pushIcon)
                         .setContentTitle(title)
